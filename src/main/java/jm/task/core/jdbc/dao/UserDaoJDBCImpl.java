@@ -20,6 +20,7 @@ public class UserDaoJDBCImpl implements UserDao {
                     "Name VARCHAR(50) NOT NULL," +
                     "LastName VARCHAR(50)," +
                     "Age SMALLINT NOT NULL)");
+            System.out.println("Таблица Users создана.");
         }
         catch(SQLException e) {
             e.printStackTrace();
@@ -30,6 +31,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try(Connection conn = Util.getConnection()) {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS Users");
+            System.out.println("Таблица Users уничтожена.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -43,6 +45,7 @@ public class UserDaoJDBCImpl implements UserDao {
             stmt.setString(2, lastName);
             stmt.setByte(3, age);
             stmt.executeUpdate();
+            System.out.printf("Пользователь %s %s %d был добавлен.\n", name, lastName, age);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,6 +57,7 @@ public class UserDaoJDBCImpl implements UserDao {
                     "DELETE FROM Users WHERE Id = ?");
             stmt.setLong(1, id);
             stmt.executeUpdate();
+            System.out.print("Пользователь id = " + id + " успешно удален.\n");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,6 +87,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try(Connection conn = Util.getConnection()) {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("TRUNCATE TABLE Users");
+            System.out.println("Таблица Users очищена.");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

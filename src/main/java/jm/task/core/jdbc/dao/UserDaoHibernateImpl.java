@@ -24,6 +24,7 @@ public class UserDaoHibernateImpl implements UserDao {
                     "LastName VARCHAR(50)," +
                     "Age SMALLINT NOT NULL)").executeUpdate();
             tx.commit();
+            System.out.println("Таблица Users создана.");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -36,6 +37,7 @@ public class UserDaoHibernateImpl implements UserDao {
             Transaction tx = session.beginTransaction();
             session.createSQLQuery("DROP TABLE IF EXISTS Users").executeUpdate();
             tx.commit();
+            System.out.println("Таблица Users уничтожена.");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -48,6 +50,7 @@ public class UserDaoHibernateImpl implements UserDao {
             Transaction tx = session.beginTransaction();
             session.save(new User(name, lastName, age));
             tx.commit();
+            System.out.printf("Пользователь %s %s %d был добавлен.\n", name, lastName, age);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -60,6 +63,7 @@ public class UserDaoHibernateImpl implements UserDao {
             Transaction tx = session.beginTransaction();
             session.delete(session.get(User.class, id));
             tx.commit();
+            System.out.print("Пользователь id = " + id + " успешно удален.\n");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +75,7 @@ public class UserDaoHibernateImpl implements UserDao {
         List<User> users = new ArrayList<>();
         try(Session session = Util.getSessionFactory().openSession()) {
             Transaction tx = session.beginTransaction();
-            users  = (List<User>) session.createQuery("FROM User").list();
+            users  = session.createQuery("FROM User", User.class).list();
             tx.commit();
         }
         catch (Exception e) {
@@ -86,6 +90,7 @@ public class UserDaoHibernateImpl implements UserDao {
             Transaction tx = session.beginTransaction();
             session.createSQLQuery("TRUNCATE TABLE Users").executeUpdate();
             tx.commit();
+            System.out.println("Таблица Users очищена.");
         }
         catch (Exception e) {
             e.printStackTrace();
